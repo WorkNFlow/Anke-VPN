@@ -36,6 +36,11 @@ export const SpotlightShell: React.FC<SpotlightShellProps> = ({
     setPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   };
 
+  const isFullHeight = className.includes('h-full') || innerClassName.includes('h-full');
+  const resolvedInnerClassName = isFullHeight && !innerClassName.includes('h-full')
+    ? `h-full ${innerClassName}`
+    : innerClassName;
+
   return (
     <div
       ref={ref}
@@ -53,7 +58,7 @@ export const SpotlightShell: React.FC<SpotlightShellProps> = ({
           background: `radial-gradient(460px circle at ${pos.x}px ${pos.y}px, rgba(253, 224, 71, 0.16), transparent 40%)`,
         }}
       />
-      <div className={`double-bezel-core relative z-10 ${innerClassName}`}>
+      <div className={`double-bezel-core relative z-10 ${resolvedInnerClassName}`}>
         {children}
       </div>
     </div>

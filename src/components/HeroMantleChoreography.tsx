@@ -372,17 +372,15 @@ export const HeroMantleChoreography: React.FC = () => {
                 </motion.a>
               </motion.div>
 
-              {/* Quick Jump to All Platforms & scroll hint */}
+              {/* Quick Jump to All Platforms */}
               <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs sm:text-sm text-[#A1A1AA]">
                 <a
                   href="#platforms"
                   className="inline-flex items-center gap-1.5 hover:text-[#FAFAFA] underline underline-offset-4 decoration-[#2A2A2A] hover:decoration-[#FDE047] transition-colors"
                 >
-                  <span>Все платформы: Windows, macOS, iOS, Android, Linux</span>
+                  <span>Доступно на всех устройствах</span>
                   <ArrowDown className="h-3.5 w-3.5" />
                 </a>
-                <span className="text-[#3A3A3A] hidden sm:inline">·</span>
-                <span>Листайте вниз — смартфон проследует за вами</span>
               </div>
             </div>
 
