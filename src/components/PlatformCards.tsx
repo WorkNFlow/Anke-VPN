@@ -23,13 +23,9 @@ export const PlatformCards: React.FC = () => {
     <section
       id="platforms"
       ref={sectionRef}
-      className="relative z-30 bg-[#111111] py-20 lg:py-28 border-y border-[#2A2A2A] shadow-[0_-28px_60px_rgba(0,0,0,0.92),0_28px_65px_rgba(0,0,0,0.96)]"
+      className="relative z-20 bg-[#111111] py-20 lg:py-28 border-b border-[#2A2A2A]"
     >
-      {/* Subtle top and bottom metallic rim highlights to emphasize the deck depth over the travelling iPhone */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent"
-      />
+      {/* Subtle bottom metallic rim highlight */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent"

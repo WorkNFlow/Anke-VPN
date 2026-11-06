@@ -1,13 +1,45 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, useSpring, useReducedMotion } from 'motion/react';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Download, ArrowDown } from 'lucide-react';
 import { OFFICIAL_LINKS, MANTLE_BENCHMARKS } from '../data/vpnData';
 import { SpotlightShell } from './AnkeLogo';
-import { PlatformCards } from './PlatformCards';
 import { IPhone3DModel, IPhoneTab } from './IPhone3DModel';
+import { useUserOS, DetectedOS } from '../utils/useUserOS';
+
+const renderOSIcon = (os: DetectedOS) => {
+  switch (os) {
+    case 'macos':
+    case 'ios':
+      return (
+        <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
+          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.96 6.33c.67-.81 1.12-1.94 1-3.08-.96.04-2.13.64-2.82 1.45-.61.7-.15 1.86-1.03 2.97 1.08.08 2.18-.53 2.85-1.34z" />
+        </svg>
+      );
+    case 'windows':
+      return (
+        <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
+          <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801" />
+        </svg>
+      );
+    case 'android':
+      return (
+        <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
+          <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4116 13.8533 8.08 12 8.08s-3.5902.3316-5.1367.8697L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396" />
+        </svg>
+      );
+    case 'linux':
+    default:
+      return (
+        <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
+          <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.164 6.839 9.49.5.09.682-.218.682-.484 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.53 1.03 1.53 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .269.18.579.688.481C19.137 20.16 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+        </svg>
+      );
+  }
+};
 
 export const HeroMantleChoreography: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
+  const userOS = useUserOS();
 
   const heroSlotRef = useRef<HTMLDivElement>(null);
   const mantleTrackRef = useRef<HTMLDivElement>(null);
@@ -73,8 +105,9 @@ export const HeroMantleChoreography: React.FC = () => {
     // Symmetric parabola 4 * t * (1 - t), peaking at 1.0 when passing behind #platforms
     const parabola = 4 * rawT * (1 - rawT);
 
-    // Horizontal parabolic arc amplitude (sweeps inward toward center on desktop, then back out to right slot)
-    const arcAmplitude = shouldReduceMotion ? 0 : vw >= 1024 ? -210 : vw >= 640 ? -70 : 0;
+    // Horizontal parabolic arc amplitude:
+    // Gentle natural sway along the right column instead of swinging across the entire screen
+    const arcAmplitude = shouldReduceMotion ? 0 : vw >= 1024 ? -35 : vw >= 640 ? -20 : 0;
 
     // Exact interpolated viewport X and Y
     const currentX =
@@ -98,13 +131,13 @@ export const HeroMantleChoreography: React.FC = () => {
     let targetScale = 1;
 
     if (rawT < 1) {
-      // In Hero or flying along the parabola behind "Доступно на всех устройствах"
-      targetRotateZ = shouldReduceMotion ? 0 : -3 * (1 - rawT) - 14 * parabola;
-      targetRotateY = shouldReduceMotion ? 0 : -18 * (1 - rawT) - 34 * parabola - 22 * rawT;
-      targetRotateX = shouldReduceMotion ? 0 : 8 * (1 - rawT) + 20 * parabola + 10 * rawT;
-      targetScale = shouldReduceMotion ? 1 : 1 - 0.04 * parabola;
+      // Direct, graceful glide from Hero into Mantle Step 01
+      targetRotateZ = shouldReduceMotion ? 0 : -2 * (1 - rawT) - 3 * parabola;
+      targetRotateY = shouldReduceMotion ? 0 : -8 * (1 - rawT) - 14 * parabola - 22 * rawT;
+      targetRotateX = shouldReduceMotion ? 0 : 4 * (1 - rawT) + 6 * parabola + 10 * rawT;
+      targetScale = shouldReduceMotion ? 1 : 1 + 0.02 * parabola;
 
-      // While in Hero / early flight, show Главная; as it emerges into Mantle, ready step 01
+      // In Hero / early flight, show Главная; as it approaches Mantle, ready step 01
       setActiveStepIndex(0);
       setActiveTab('home');
     } else {
@@ -139,6 +172,9 @@ export const HeroMantleChoreography: React.FC = () => {
     springRotateZ.set(targetRotateZ);
     springScale.set(targetScale);
 
+    // Cleanly fade out once scrolled far past Mantle's pinned slot
+    const isPastMantle = mantleSlotRect.bottom < -120;
+
     setPhoneCoords({
       x: currentX,
       y: currentY,
@@ -146,7 +182,7 @@ export const HeroMantleChoreography: React.FC = () => {
       rotateY: targetRotateY,
       rotateZ: targetRotateZ,
       scale: targetScale,
-      ready: true,
+      ready: !isPastMantle,
     });
   }, [shouldReduceMotion, springRotateX, springRotateY, springRotateZ, springScale]);
 
@@ -302,6 +338,7 @@ export const HeroMantleChoreography: React.FC = () => {
                 transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
                 className="mt-10 flex flex-wrap items-center gap-4"
               >
+                {/* 1. Primary Commercial CTA: Купить подписку */}
                 <motion.a
                   href={OFFICIAL_LINKS.appLogin}
                   target="_blank"
@@ -315,9 +352,36 @@ export const HeroMantleChoreography: React.FC = () => {
                     <ArrowUpRight className="h-5 w-5" />
                   </span>
                 </motion.a>
+
+                {/* 2. Secondary Smart CTA: Direct download matching user's detected OS */}
+                <motion.a
+                  href={userOS.downloadUrl}
+                  target={userOS.isExternalStore ? '_blank' : undefined}
+                  rel={userOS.isExternalStore ? 'noopener noreferrer' : undefined}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="group inline-flex items-center gap-3 rounded-full border border-[#2A2A2A] bg-[#161616]/90 backdrop-blur-md pl-6 pr-3 py-3.5 text-base font-semibold text-[#FAFAFA] hover:border-[#FDE047]/45 hover:bg-[#1E1E1E] transition-all whitespace-nowrap shrink-0 shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
+                >
+                  <span className="flex h-5 w-5 items-center justify-center text-[#A1A1AA] group-hover:text-[#FDE047] transition-colors">
+                    {renderOSIcon(userOS.os)}
+                  </span>
+                  <span>{userOS.buttonText}</span>
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/[0.06] text-[#A1A1AA] group-hover:bg-[#FDE047] group-hover:text-black transition-all duration-200">
+                    <Download className="h-4 w-4" />
+                  </span>
+                </motion.a>
               </motion.div>
 
-              <div className="mt-8 flex items-center gap-3 text-xs sm:text-sm text-[#A1A1AA]">
+              {/* Quick Jump to All Platforms & scroll hint */}
+              <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs sm:text-sm text-[#A1A1AA]">
+                <a
+                  href="#platforms"
+                  className="inline-flex items-center gap-1.5 hover:text-[#FAFAFA] underline underline-offset-4 decoration-[#2A2A2A] hover:decoration-[#FDE047] transition-colors"
+                >
+                  <span>Все платформы: Windows, macOS, iOS, Android, Linux</span>
+                  <ArrowDown className="h-3.5 w-3.5" />
+                </a>
+                <span className="text-[#3A3A3A] hidden sm:inline">·</span>
                 <span>Листайте вниз — смартфон проследует за вами</span>
               </div>
             </div>
@@ -335,13 +399,8 @@ export const HeroMantleChoreography: React.FC = () => {
       </section>
 
       {/* =====================================================================
-          SECTION 2: PLATFORMS ("Доступно на всех устройствах") — z-30!
-          The z-20 3D iPhone physically passes UNDERNEATH this section!
-         ===================================================================== */}
-      <PlatformCards />
-
-      {/* =====================================================================
-          SECTION 3: MANTLE CORE STICKY PIN TRACK & BENCHMARKS (z-10)
+          SECTION 2: MANTLE CORE STICKY PIN TRACK & BENCHMARKS (z-10)
+          The 3D iPhone smoothly glides directly from Hero into Step 01!
          ===================================================================== */}
       <section id="mantle" className="relative z-10 border-b border-[#2A2A2A]">
         {/* Tall Sticky Track (320vh) — locks scroll while stepping through 01, 02, 03 */}

@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { HeroMantleChoreography } from './components/HeroMantleChoreography';
+import { PlatformCards } from './components/PlatformCards';
 import { BentoFeatures } from './components/BentoFeatures';
 import { PricingSection } from './components/PricingSection';
 import { SupportChatWidget } from './components/SupportChatWidget';
@@ -17,7 +18,7 @@ export default function App() {
   const [activeSection, setActiveSection] = useState<string>('top');
 
   useEffect(() => {
-    const sectionIds = ['top', 'platforms', 'mantle', 'features', 'pricing', 'support'];
+    const sectionIds = ['top', 'mantle', 'platforms', 'features', 'pricing', 'support'];
 
     const handleScroll = () => {
       // Bottom of page detection (support section)
@@ -65,12 +66,14 @@ export default function App() {
 
       {/* Main Content */}
       <main className="flex-1">
-        {/* UNIFIED CHOREOGRAPHY:
-            1. Hero Section (z-10)
-            2. Single 3D iPhone flying along a parabola (z-20)
-            3. Cross-Platform "Доступно на всех устройствах" deck above the iPhone flight (z-30)
-            4. Pinned "Mantle — ядро Anke" section (steps 01, 02, 03 while pinned, then normal scroll) + "VLESS против Mantle" */}
+        {/* UNIFIED HERO & MANTLE CHOREOGRAPHY:
+            1. Hero Section (z-10) with smart OS-detected direct download CTA
+            2. Single 3D iPhone flying uninterrupted directly from Hero into Mantle
+            3. Pinned "Mantle — ядро Anke" section (steps 01, 02, 03) + "VLESS против Mantle" benchmarks */}
         <HeroMantleChoreography />
+
+        {/* SECTION 2: PLATFORMS ("Доступно на всех устройствах") */}
+        <PlatformCards />
 
         {/* BENTO GRID FEATURES & OFFICIAL SERVER LIST */}
         <BentoFeatures />

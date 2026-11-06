@@ -9,8 +9,8 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
   const navItems = [
     { id: 'top', label: 'Главная', href: '#top' },
-    { id: 'platforms', label: 'Устройства', href: '#platforms' },
     { id: 'mantle', label: 'Ядро Mantle', href: '#mantle' },
+    { id: 'platforms', label: 'Устройства', href: '#platforms' },
     { id: 'features', label: 'Список серверов', href: '#features' },
     { id: 'pricing', label: 'Цены', href: '#pricing' },
     { id: 'support', label: 'Поддержка', href: '#support' },
