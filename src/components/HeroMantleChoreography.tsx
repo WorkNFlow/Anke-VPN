@@ -207,7 +207,7 @@ export const HeroMantleChoreography: React.FC = () => {
     {
       tab: 'regions',
       num: '02',
-      title: '02. Премиум серверы и YouTube без рекламы',
+      title: '02. Премиум серверы и YouTube\u00A0без\u00A0рекламы',
       desc: 'Быстрое переключение между локациями в Европе, США и Азии прямо из списка регионов.',
     },
     {

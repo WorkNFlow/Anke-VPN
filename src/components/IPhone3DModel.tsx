@@ -341,10 +341,10 @@ export const IPhone3DModel: React.FC<IPhone3DModelProps> = ({
                             </div>
 
                             {server.tag && (
-                              <span className="shrink-0 text-[10px] font-medium">
+                              <span className="shrink-0 text-[10px] font-medium inline-flex items-center gap-1.5">
                                 <span className="text-[#FDE047] font-semibold">
                                   {server.tag.name}
-                                </span>{' '}
+                                </span>
                                 <span className="text-[#8E8E93]">{server.tag.note}</span>
                               </span>
                             )}

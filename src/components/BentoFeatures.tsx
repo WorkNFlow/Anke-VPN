@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
-import { Zap, Lock, Globe, Check, Smartphone, Laptop, Monitor } from 'lucide-react';
+import { Zap, Lock, Globe, Check, Smartphone, Laptop, Monitor, Tablet, Tv } from 'lucide-react';
 import { OFFICIAL_SERVERS, OfficialServer } from '../data/vpnData';
 import { SpotlightShell } from './AnkeLogo';
 
 export const BentoFeatures: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
   const [activeServer, setActiveServer] = useState<OfficialServer>(OFFICIAL_SERVERS[5]); // Албания YouTube без рекламы
-  const [activeRule, setActiveRule] = useState<string>('all');
   const [isSpeedBoosted, setIsSpeedBoosted] = useState(false);
   const [isPrivacyMasked, setIsPrivacyMasked] = useState(true);
 
@@ -57,25 +56,50 @@ export const BentoFeatures: React.FC = () => {
                   </span>
                 </div>
 
-                {/* Animated High-Speed Light Streams */}
-                <div className="space-y-2.5">
-                  {[0.92, 1, 0.85].map((widthRatio, idx) => (
-                    <div
-                      key={idx}
-                      className="relative h-2.5 w-full overflow-hidden rounded-full bg-[#1E1E1E]"
+                {/* Single Animated High-Speed Light Stream */}
+                <div className="space-y-3">
+                  <div className="relative h-3 w-full overflow-hidden rounded-full bg-[#1A1A1A] border border-white/5">
+                    <motion.div
+                      initial={{
+                        width: shouldReduceMotion ? '95%' : '0%',
+                        opacity: shouldReduceMotion ? 1 : 0,
+                      }}
+                      whileInView={{
+                        width: isSpeedBoosted ? '100%' : '95%',
+                        opacity: 1,
+                      }}
+                      viewport={{ once: false, margin: '-40px' }}
+                      transition={{
+                        width: {
+                          duration: shouldReduceMotion ? 0 : isSpeedBoosted ? 0.35 : 1.1,
+                          ease: [0.16, 1, 0.3, 1],
+                        },
+                        opacity: { duration: 0.3 },
+                      }}
+                      className="relative h-full rounded-full bg-gradient-to-r from-[#FDE047]/40 via-[#FDE047] to-[#FAFAFA] shadow-[0_0_20px_rgba(253,224,71,0.45)]"
                     >
-                      <motion.div
-                        initial={{ width: '35%' }}
-                        whileInView={{ width: `${widthRatio * 100}%` }}
-                        viewport={{ once: false }}
-                        animate={{
-                          width: isSpeedBoosted ? '100%' : `${widthRatio * 100}%`,
-                        }}
-                        transition={{ duration: 0.7, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                        className="h-full rounded-full bg-gradient-to-r from-[#FDE047]/40 via-[#FDE047] to-[#FAFAFA]"
-                      />
-                    </div>
-                  ))}
+                      {/* Fluid kinetic shimmer pulse */}
+                      {!shouldReduceMotion && (
+                        <motion.div
+                          animate={{ x: ['-100%', '350%'] }}
+                          transition={{
+                            repeat: Infinity,
+                            duration: 2.2,
+                            ease: 'linear',
+                          }}
+                          className="absolute inset-0 w-24 bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none"
+                        />
+                      )}
+                    </motion.div>
+                  </div>
+
+                  <div className="flex items-center justify-between text-[11px] text-[#A1A1AA] pt-1">
+                    <span>0 Гбит/с</span>
+                    <span className="text-[#FDE047] font-mono font-medium">
+                      Максимальная пропускная способность
+                    </span>
+                    <span className="font-mono">15 Гбит/с</span>
+                  </div>
                 </div>
               </div>
             </SpotlightShell>
@@ -145,40 +169,37 @@ export const BentoFeatures: React.FC = () => {
             </SpotlightShell>
           </motion.div>
 
-          {/* BENTO CARD 3: Доступность & Exact Official Server List (Col Span 5 - поуже, в 1 столбец) */}
+          {/* BENTO CARD 3: Доступность & Exact Official Server List (Col Span 7) */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, margin: '-60px' }}
             transition={{ duration: 0.55, delay: 0.14, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5"
+            className="lg:col-span-7"
           >
             <SpotlightShell
               className="h-full hover:border-[#FDE047]/45"
-              innerClassName="h-full p-6 sm:p-7 flex flex-col justify-between"
+              innerClassName="h-full p-6 sm:p-8 flex flex-col justify-between"
             >
               <div>
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#2A2A2A] bg-[#121212] text-[#FDE047] shrink-0">
-                      <Globe className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-[#FAFAFA]">
-                        Доступность
-                      </h3>
-                      <p className="text-xs sm:text-sm text-[#A1A1AA]">
-                        Моментальное подключение к серверам
-                      </p>
-                    </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#2A2A2A] bg-[#121212] text-[#FDE047]">
+                    <Globe className="h-6 w-6" />
                   </div>
-                  <span className="text-xs font-semibold text-[#FDE047] self-start sm:self-center shrink-0">
+                  <span className="rounded-full border border-[#FDE047]/30 bg-[#FDE047]/10 px-3 py-1 text-xs font-semibold text-[#FDE047]">
                     Премиум серверы
                   </span>
                 </div>
 
-                {/* Exact 8 Official Production Servers in 1 Single Column */}
-                <div className="flex flex-col gap-2">
+                <h3 className="mt-5 text-2xl sm:text-3xl font-bold tracking-tight text-[#FAFAFA]">
+                  Доступность
+                </h3>
+                <p className="mt-2 text-base sm:text-lg text-[#A1A1AA] leading-relaxed">
+                  Моментальное подключение к серверам в ключевых локациях
+                </p>
+
+                {/* Exact 8 Official Production Servers in 2 balanced columns */}
+                <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {OFFICIAL_SERVERS.map((server, idx) => {
                     const isSelected = activeServer.id === server.id;
                     return (
@@ -194,13 +215,12 @@ export const BentoFeatures: React.FC = () => {
                           delay: idx * 0.03,
                           ease: [0.16, 1, 0.3, 1],
                         }}
-                        whileHover={{ x: 2 }}
+                        whileHover={{ y: -2 }}
                         whileTap={{ scale: 0.98 }}
-                        className={`flex items-center justify-between gap-2.5 rounded-xl border px-3 py-2.5 text-left transition-all cursor-pointer ${
-                          isSelected
+                        className={`flex items-center justify-between gap-2.5 rounded-xl border px-3.5 py-3 text-left transition-all cursor-pointer ${isSelected
                             ? 'border-[#FDE047] bg-[#FDE047]/[0.09] shadow-[0_0_24px_rgba(253,224,71,0.12)]'
                             : 'border-[#2A2A2A] bg-[#121212] hover:border-[#FAFAFA]/30'
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center gap-3 min-w-0">
                           <img
@@ -220,9 +240,9 @@ export const BentoFeatures: React.FC = () => {
                         </div>
 
                         {server.tag ? (
-                          <span className="shrink-0 rounded-lg border border-[#FDE047]/40 bg-[#FDE047]/15 px-2 py-0.5 text-[10px] font-medium text-[#FAFAFA]">
-                            <strong className="text-[#FDE047]">{server.tag.name}</strong>{' '}
-                            <span className="text-[#A1A1AA]">{server.tag.note}</span>
+                          <span className="shrink-0 rounded-lg border border-[#FDE047]/40 bg-[#FDE047]/15 px-2.5 py-1 text-[11px] font-medium text-[#FAFAFA] inline-flex items-center gap-1.5">
+                            <strong className="text-[#FDE047] font-semibold tracking-normal">{server.tag.name}</strong>
+                            <span className="text-[#FAFAFA]/90">{server.tag.note}</span>
                           </span>
                         ) : (
                           isSelected && (
@@ -236,131 +256,115 @@ export const BentoFeatures: React.FC = () => {
                   })}
                 </div>
               </div>
+
+              {/* Active Server Telemetry Status Footer */}
+              <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#2A2A2A] bg-[#121212] px-4 py-3 text-xs">
+                <div className="flex items-center gap-2.5">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#FDE047] opacity-75" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-[#FDE047]" />
+                  </span>
+                  <span className="text-[#A1A1AA]">
+                    Активный узел:{' '}
+                    <strong className="text-[#FAFAFA] font-semibold">
+                      {activeServer.country}
+                    </strong>{' '}
+                    ({activeServer.city})
+                  </span>
+                </div>
+                <div className="flex items-center gap-2.5 font-mono text-[#FDE047] text-[11px]">
+                  <span className="rounded bg-[#181818] px-2 py-0.5 border border-white/5">Mantle</span>
+                  <span className="text-[#A1A1AA]">Задержка &lt; 20 мс</span>
+                </div>
+              </div>
             </SpotlightShell>
           </motion.div>
 
-          {/* BENTO CARD 4: Подписка для нескольких устройств (Col Span 7 - пошире) */}
+          {/* BENTO CARD 4: До 5 устройств (Col Span 5 — просторная и гармоничная) */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, margin: '-60px' }}
             transition={{ duration: 0.55, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-7"
+            className="lg:col-span-5"
           >
             <SpotlightShell
               className="h-full hover:border-[#FDE047]/45"
-              innerClassName="h-full p-6 sm:p-8 flex flex-col justify-between gap-6"
+              innerClassName="h-full p-6 sm:p-8 flex flex-col justify-between"
             >
               <div>
-                <div className="flex items-center justify-between gap-3">
-                  <span className="rounded-full border border-[#FDE047]/35 bg-[#FDE047]/10 px-3 py-1 text-xs font-mono font-semibold text-[#FDE047]">
-                    До 5 устройств
-                  </span>
-                  <span className="text-xs font-mono text-[#A1A1AA]">
-                    Единая подписка
+                <div className="flex items-center justify-between">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#2A2A2A] bg-[#121212] text-[#FDE047]">
+                    <Smartphone className="h-6 w-6" />
+                  </div>
+                  <span className="rounded-full border border-[#FDE047]/30 bg-[#FDE047]/10 px-3 py-1 text-xs font-semibold text-[#FDE047]">
+                    5 слотов
                   </span>
                 </div>
 
-                <h3 className="mt-4 text-2xl sm:text-3xl font-bold tracking-tight text-[#FAFAFA]">
-                  Умные правила и работа на всех устройствах
+                <h3 className="mt-5 text-2xl sm:text-3xl font-bold tracking-tight text-[#FAFAFA]">
+                  До 5 устройств
                 </h3>
-                <p className="mt-2 text-sm sm:text-base text-[#A1A1AA] leading-relaxed">
-                  Настраивайте, где должен работать Anke, и подключайте смартфоны, планшеты и компьютеры одновременно без потери скорости.
+                <p className="mt-2 text-base sm:text-lg text-[#A1A1AA] leading-relaxed">
+                  Одна подписка защищает всю вашу технику одновременно
                 </p>
               </div>
 
-              {/* Clean, Modern Devices & Rules Panel */}
-              <div className="flex-1 flex flex-col justify-between gap-4 rounded-2xl border border-[#2A2A2A] bg-[#121212] p-4 sm:p-5">
-                {/* Clean Rule Selector */}
-                <div className="rounded-xl border border-[#2A2A2A] bg-[#141416] p-3.5">
-                  <div className="flex items-center justify-between mb-2.5">
-                    <span className="text-xs font-semibold text-[#FAFAFA] flex items-center gap-2">
-                      <span className="h-2 w-2 rounded-full bg-[#FDE047]" />
-                      Где должен работать Anke?
-                    </span>
-                    <span className="text-[11px] text-[#A1A1AA]">
-                      Умная маршрутизация
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                    {[
-                      { id: 'all', title: 'Во всех приложениях' },
-                      { id: 'youtube', title: 'YouTube без рекламы' },
-                      { id: 'local', title: 'Локальные сайты напрямую' },
-                    ].map((rule) => {
-                      const isActive = activeRule === rule.id;
-                      return (
-                        <button
-                          key={rule.id}
-                          type="button"
-                          onClick={() => setActiveRule(rule.id)}
-                          className={`rounded-lg px-2.5 py-2 text-center text-xs font-medium transition-all cursor-pointer ${
-                            isActive
-                              ? 'bg-[#FDE047] text-black font-semibold shadow-sm'
-                              : 'bg-[#1C1C1E] text-[#A1A1AA] hover:text-[#FAFAFA] border border-[#2A2A2A]'
-                          }`}
-                        >
-                          {rule.title}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Connected Devices Grid (Clean 2-column with ZERO clutter) */}
-                <div className="space-y-2.5">
-                  <div className="flex items-center justify-between text-xs text-[#A1A1AA] px-1">
-                    <span>Подключенные устройства</span>
-                    <span className="font-mono text-[#FDE047]">4 из 5 активно</span>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    {[
-                      { name: 'iPhone 15 Pro Max', icon: Smartphone, region: 'Швеция' },
-                      { name: 'MacBook Pro 16"', icon: Laptop, region: 'Германия' },
-                      { name: 'Windows 11 PC', icon: Monitor, region: 'Албания (YouTube)' },
-                      { name: 'Samsung Galaxy', icon: Smartphone, region: 'Финляндия' },
-                    ].map((dev, i) => (
-                      <motion.div
-                        key={dev.name}
-                        initial={{ opacity: 0, y: 10 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: false }}
-                        transition={{ duration: 0.35, delay: i * 0.05 }}
-                        className="flex items-center justify-between gap-3 rounded-xl border border-[#2A2A2A] bg-[#181818] p-3 transition-colors hover:border-[#FDE047]/35"
-                      >
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[#2A2A2A] bg-[#121212] text-[#FDE047]">
-                            <dev.icon className="h-4 w-4" />
-                          </div>
-                          <div className="min-w-0">
-                            <div className="text-xs sm:text-sm font-semibold text-[#FAFAFA] truncate">
-                              {dev.name}
-                            </div>
-                            <div className="flex items-center gap-1.5 mt-0.5">
-                              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                              <span className="text-[11px] text-[#A1A1AA]">Подключено</span>
-                            </div>
-                          </div>
+              {/* Spacious 5-Device Grid */}
+              <div className="mt-6 flex-1 flex flex-col justify-between">
+                <div className="grid grid-cols-2 gap-2.5">
+                  {[
+                    { icon: Smartphone, label: 'Смартфон', os: 'iOS / Android' },
+                    { icon: Laptop, label: 'Ноутбук', os: 'macOS / Windows' },
+                    { icon: Monitor, label: 'ПК', os: 'Windows / Linux' },
+                    { icon: Tablet, label: 'Планшет', os: 'iPadOS / Android' },
+                  ].map((slot, idx) => (
+                    <motion.div
+                      key={idx}
+                      whileHover={{ y: -2 }}
+                      className="flex items-center gap-3 rounded-xl border border-[#2A2A2A] bg-[#121212] p-3 transition-colors hover:border-[#FDE047]/40"
+                    >
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#2A2A2A] bg-[#181818] text-[#FDE047]">
+                        <slot.icon className="h-4.5 w-4.5" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-xs sm:text-sm font-bold text-[#FAFAFA] truncate">
+                          {slot.label}
                         </div>
+                        <div className="text-[10px] text-[#A1A1AA] truncate">
+                          {slot.os}
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
 
-                        <span className="shrink-0 rounded-lg bg-white/[0.04] border border-white/[0.06] px-2.5 py-1 text-[11px] font-medium text-[#FDE047]">
-                          {dev.region}
-                        </span>
-                      </motion.div>
-                    ))}
-                  </div>
+                  {/* 5th Device Slot spanning full 2-columns */}
+                  <motion.div
+                    whileHover={{ y: -2 }}
+                    className="col-span-2 flex items-center justify-between rounded-xl border border-[#2A2A2A] bg-[#121212] p-3 transition-colors hover:border-[#FDE047]/40"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#2A2A2A] bg-[#181818] text-[#FDE047]">
+                        <Tv className="h-4.5 w-4.5" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-xs sm:text-sm font-bold text-[#FAFAFA] truncate">
+                          Smart TV & ТВ-приставки
+                        </div>
+                        <div className="text-[10px] text-[#A1A1AA] truncate">
+                          Apple TV, Android TV, Google TV
+                        </div>
+                      </div>
+                    </div>
+                    <span className="shrink-0 text-[11px] font-mono text-[#FDE047] hidden sm:inline-block">
+                      15 Гбит/с
+                    </span>
+                  </motion.div>
                 </div>
 
-                {/* Available 5th Slot Status Indicator */}
-                <div className="flex items-center justify-between border-t border-[#2A2A2A] pt-3 text-xs text-[#A1A1AA]">
-                  <span className="flex items-center gap-2 font-mono text-[#FAFAFA]">
-                    <span className="flex h-2 w-2 rounded-full bg-[#FDE047] shadow-[0_0_8px_rgba(253,224,71,0.5)]" />
-                    1 слот свободен
-                  </span>
-                  <span className="text-[11px] sm:text-xs text-[#A1A1AA]">
-                    Подключите планшет, второй телефон или Smart TV
-                  </span>
+                <div className="mt-5 flex items-center justify-between rounded-2xl border border-[#2A2A2A] bg-[#121212] px-4 py-3 text-xs">
+                  <span className="text-[#A1A1AA]">Скорость не делится</span>
+                  <span className="font-mono text-[#FDE047] font-semibold">15 Гбит/с на каждый слот</span>
                 </div>
               </div>
             </SpotlightShell>
