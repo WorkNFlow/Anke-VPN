@@ -81,14 +81,14 @@ export const IPhone3DModel: React.FC<IPhone3DModelProps> = ({
             background: isChamfer
               ? 'linear-gradient(135deg, #71717A 0%, #27272A 45%, #52525B 75%, #18181B 100%)'
               : isAntennaBand
-              ? 'linear-gradient(135deg, #52525B 0%, #3F3F46 50%, #27272A 100%)'
-              : 'linear-gradient(135deg, #636369 0%, #38383D 30%, #242428 65%, #48484F 88%, #1C1C1F 100%)',
+                ? 'linear-gradient(135deg, #52525B 0%, #3F3F46 50%, #27272A 100%)'
+                : 'linear-gradient(135deg, #636369 0%, #38383D 30%, #242428 65%, #48484F 88%, #1C1C1F 100%)',
             boxShadow:
               index === 0
                 ? '0 0 0 1px rgba(255,255,255,0.28)'
                 : index === 15
-                ? '0 0 0 1px rgba(0,0,0,0.8)'
-                : '0 0 0 0.5px rgba(255,255,255,0.08)',
+                  ? '0 0 0 1px rgba(0,0,0,0.8)'
+                  : '0 0 0 0.5px rgba(255,255,255,0.08)',
           }}
           className="pointer-events-none absolute inset-0 rounded-[52px]"
         />
@@ -191,8 +191,8 @@ export const IPhone3DModel: React.FC<IPhone3DModelProps> = ({
           {/* Dynamic Island */}
           <div className="relative z-20 pt-3 pb-2 flex justify-center bg-[#161618]">
             <div className="flex h-[25px] w-[96px] items-center justify-between rounded-full bg-black px-2.5 border border-white/[0.08] shadow-md">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#121214] ring-1 ring-white/10" />
-              <span className="h-2.5 w-2.5 rounded-full bg-[#0E1628] ring-1 ring-white/20" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#050505] ring-1 ring-[#222222]/10" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#050510] ring-1 ring-[#222222]/20" />
             </div>
           </div>
 
@@ -242,11 +242,10 @@ export const IPhone3DModel: React.FC<IPhone3DModelProps> = ({
                           type="button"
                           whileTap={{ scale: 0.93 }}
                           onClick={() => setIsConnected((prev) => !prev)}
-                          className={`relative z-10 flex h-28 w-28 items-center justify-center rounded-full border-2 transition-all duration-300 cursor-pointer ${
-                            isConnected
-                              ? 'border-[#FDE047] bg-[#FDE047] text-black shadow-[0_0_45px_rgba(253,224,71,0.35)]'
-                              : 'border-[#2E2E32] bg-[#202024] text-[#A1A1AA]'
-                          }`}
+                          className={`relative z-10 flex h-28 w-28 items-center justify-center rounded-full border-2 transition-all duration-300 cursor-pointer ${isConnected
+                            ? 'border-[#FDE047] bg-[#FDE047] text-black shadow-[0_0_45px_rgba(253,224,71,0.35)]'
+                            : 'border-[#2E2E32] bg-[#202024] text-[#A1A1AA]'
+                            }`}
                         >
                           <Power className="h-10 w-10 stroke-[2.2]" />
                         </motion.button>
@@ -320,9 +319,8 @@ export const IPhone3DModel: React.FC<IPhone3DModelProps> = ({
                           >
                             <div className="flex items-center gap-2.5 min-w-0">
                               <span
-                                className={`h-1.5 w-1.5 rounded-full shrink-0 transition-opacity ${
-                                  isSelected ? 'bg-[#FDE047] opacity-100' : 'opacity-0'
-                                }`}
+                                className={`h-1.5 w-1.5 rounded-full shrink-0 transition-opacity ${isSelected ? 'bg-[#FDE047] opacity-100' : 'opacity-0'
+                                  }`}
                               />
                               <img
                                 src={server.flagUrl}
@@ -456,9 +454,8 @@ export const IPhone3DModel: React.FC<IPhone3DModelProps> = ({
               <button
                 type="button"
                 onClick={() => onTabChange('home')}
-                className={`flex flex-col items-center gap-1 py-1 text-[10px] font-medium transition-colors cursor-pointer ${
-                  activeTab === 'home' ? 'text-[#FDE047]' : 'text-[#8E8E93] hover:text-[#FAFAFA]'
-                }`}
+                className={`flex flex-col items-center gap-1 py-1 text-[10px] font-medium transition-colors cursor-pointer ${activeTab === 'home' ? 'text-[#FDE047]' : 'text-[#8E8E93] hover:text-[#FAFAFA]'
+                  }`}
               >
                 <Home className="h-4 w-4" />
                 <span>Главная</span>
@@ -466,11 +463,10 @@ export const IPhone3DModel: React.FC<IPhone3DModelProps> = ({
               <button
                 type="button"
                 onClick={() => onTabChange('regions')}
-                className={`flex flex-col items-center gap-1 py-1 text-[10px] font-medium transition-colors cursor-pointer ${
-                  activeTab === 'regions'
-                    ? 'text-[#FDE047]'
-                    : 'text-[#8E8E93] hover:text-[#FAFAFA]'
-                }`}
+                className={`flex flex-col items-center gap-1 py-1 text-[10px] font-medium transition-colors cursor-pointer ${activeTab === 'regions'
+                  ? 'text-[#FDE047]'
+                  : 'text-[#8E8E93] hover:text-[#FAFAFA]'
+                  }`}
               >
                 <Globe className="h-4 w-4" />
                 <span>Регионы</span>
@@ -478,11 +474,10 @@ export const IPhone3DModel: React.FC<IPhone3DModelProps> = ({
               <button
                 type="button"
                 onClick={() => onTabChange('settings')}
-                className={`flex flex-col items-center gap-1 py-1 text-[10px] font-medium transition-colors cursor-pointer ${
-                  activeTab === 'settings'
-                    ? 'text-[#FDE047]'
-                    : 'text-[#8E8E93] hover:text-[#FAFAFA]'
-                }`}
+                className={`flex flex-col items-center gap-1 py-1 text-[10px] font-medium transition-colors cursor-pointer ${activeTab === 'settings'
+                  ? 'text-[#FDE047]'
+                  : 'text-[#8E8E93] hover:text-[#FAFAFA]'
+                  }`}
               >
                 <Settings className="h-4 w-4" />
                 <span>Настройки</span>
