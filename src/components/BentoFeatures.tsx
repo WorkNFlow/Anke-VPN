@@ -207,17 +207,18 @@ export const BentoFeatures: React.FC = () => {
                         key={server.id}
                         type="button"
                         onClick={() => setActiveServer(server)}
-                        initial={{ opacity: 0, y: 10 }}
+                        initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: false }}
+                        viewport={{ once: true, margin: '-20px' }}
                         transition={{
-                          duration: 0.3,
-                          delay: idx * 0.03,
+                          duration: shouldReduceMotion ? 0 : 0.35,
+                          delay: shouldReduceMotion ? 0 : idx * 0.03,
                           ease: [0.16, 1, 0.3, 1],
                         }}
-                        whileHover={{ y: -2 }}
+                        style={{ willChange: 'transform, opacity' }}
+                        whileHover={shouldReduceMotion ? undefined : { y: -2 }}
                         whileTap={{ scale: 0.98 }}
-                        className={`flex items-center justify-between gap-2.5 rounded-xl border px-3.5 py-3 text-left transition-all cursor-pointer ${isSelected
+                        className={`flex items-center justify-between gap-2.5 rounded-xl border px-3.5 py-3 text-left transition-colors duration-200 cursor-pointer ${isSelected
                             ? 'border-[#FDE047] bg-[#FDE047]/[0.09] shadow-[0_0_24px_rgba(253,224,71,0.12)]'
                             : 'border-[#2A2A2A] bg-[#121212] hover:border-[#FAFAFA]/30'
                           }`}
